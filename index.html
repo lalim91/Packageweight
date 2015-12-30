@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JS Bin</title>
+</head>
+<body>
+<script type="text/javascript">
+    //it's not wrong to pass in a value like this to a function, in fact it is good.  Though usually we don't want to put so much code into the onclick handler below.  There are better ways to do it, but since we haven't covered those just yet, I'll say this:
+    //have a function called display_cost(), inside it gather the weight from the input, call calculateCost to get the value, and then print the value into the div like you are doing below.
+    //Also you will want to put this script block up in between the head tags above.  Or to the end of the body tag below (just inside the </body> tag)
+    //very well done overall!  Fix the problems and we'll move forward with
+    function calculateCost(weight) {
+        var ounces=weight*16  //remember to put semicolons after lines of code.  Any line I comment with ## needs one, in addition to whatever else I write.  ##
+        if (weight < 1) {
+            return 20*ounces //## remember, it's cents per ounce, not dollars per ounce.  So you would need to either have this be .2, or deal with it as cents elsewhere.  Better to have it as .2 since it is more accurate to what you are intending
+        }
+        if (1<weight<5) { //can't really do this.  You would have to combine it thusly: weight > 1 && weight < 5
+            return 40*ounces//##
+        }
+        if (weight>5) {
+            return 70*ounces//##
+        }
+    }
+</script>
+<form>
+    Package Weight: <input type="text" name="PackageWeight" id="weight">
+    <button type="button" onclick="document.getElementById('cost_calculation').innerHTML= calculateCost(document.getElementById('weight').value)">Find Cost</button>
+
+</form>
+<div id="cost_calculation">
+
+</div>
+</body>
+</html>
