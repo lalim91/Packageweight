@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>JS Bin</title>
 </head>
-<body>
+<body onload="calculate_shippingtime()">
 <form>
     Package Weight: <input type="text" name="PackageWeight" id="weight">
     <button type="button" onclick="displayCost()">Find Cost</button>
@@ -21,16 +21,22 @@
         if (weight < 1) {
             return .2*ounces; //
         }
-        if (weight > 1 && weight < 5) {
+        else if (weight > 1 && weight < 5) {
             return .4*ounces;
         }
-        if (weight>5) {
+        else { //weight > 5
             return .7*ounces;
         }
     }
     function displayCost() {
-        document.getElementById('cost_calculation').innerHTML= calculateCost(document.getElementById('weight').value);
+        var weight = document.getElementById('weight').value;
+        var cost = calculateCost(weight);
+        document.getElementById('cost_calculation').innerHTML= cost;
     }
+    function calculate_shippingtime(){
+        //calculate the shipping time and apply to each radio button text
+    }
+    alert('on script run');
     //consolelog(calculateCost(document.getElementById('weight').value))
 </script>
 </body>
