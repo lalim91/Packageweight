@@ -5,14 +5,25 @@
     <title>JS Bin</title>
 </head>
 <body onload="calculate_shippingtime()">
-<form>
-    Package Weight: <input type="text" name="PackageWeight" id="weight">
-    <button type="button" onclick="displayCost()">Find Cost</button>
-</form>
-<div id="cost_calculation">
+    <form>
+        Package Weight: <input type="text" name="PackageWeight" id="weight"> <br>
+        <br>
+        <p> Today is: <span id="today"></span></p>
+        <input class="day" id="next" type="radio" name="day" value="Next Day Shipping">
+            <label for="next">Next Day Shipping <span id="dNext"></span></label> <br>
+        <input class="day" id="2" type="radio" name="day" value="2 Day Shipping">
+            <label for="2">2 Day Shipping <span id="dTwo"></span></label> <br>
+        <input class="day" id="standard" type="radio" name="day" value="Standard Shipping" checked>
+            <label for="standard">Standard Shipping <span id="dStand"></span></label> <br>
 
-</div>
-<script type="text/javascript">
+        <button type="button" onclick="displayCost()">Find Cost</button>
+    </form>
+    <div id="cost_calculation"></div>
+        <br>
+        <br>
+
+
+    <script type="text/javascript">
     //it's not wrong to pass in a value like this to a function, in fact it is good.  Though usually we don't want to put so much code into the onclick handler below.  There are better ways to do it, but since we haven't covered those just yet, I'll say this:
     //have a function called display_cost(), inside it gather the weight from the input, call calculateCost to get the value, and then print the value into the div like you are doing below.
 
@@ -28,16 +39,38 @@
             return .7*ounces;
         }
     }
+
     function displayCost() {
         var weight = document.getElementById('weight').value;
         var cost = calculateCost(weight);
-        document.getElementById('cost_calculation').innerHTML= cost;
+        document.getElementById('cost_calculation').innerHTML = cost;
     }
+
     function calculate_shippingtime(){
         //calculate the shipping time and apply to each radio button text
     }
-    alert('on script run');
-    //consolelog(calculateCost(document.getElementById('weight').value))
+
+    var d = new Date();
+    document.getElementById("today").innerHTML = d.toDateString();
+
+    /*function nextDay() {
+     var n = new Date();
+     var m = n.setDate(n.getDate() + 1);
+     document.getElementById("dNext").innerHTML = m.toDateString();
+     }
+     function twoDay() {
+     var c = new Date();
+     var b = c.setDate(c.getDate()+2);
+     document.getElementById("dTwo").innerHTML = b.toDateString();
+
+     function standShip() {
+     var p = new Date ();
+     var o = p.setDate(p.getDate()+6);
+     document.getElementById("dStand").innerHTML = o.toDateString();
+     }
+
+
+
 </script>
 </body>
 </html>
