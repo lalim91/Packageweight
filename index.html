@@ -4,32 +4,140 @@
     <meta charset="utf-8">
     <title>JS Bin</title>
 </head>
-<body>
-<script type="text/javascript">
+<body onload="calculate_shippingtime()">
+    <form>
+        Package Weight: <input type="text" name="PackageWeight" id="weight"> <br>
+        <br>
+        <p> Today is: <span id="today"></span></p>
+        <div>
+            <input class="day" id="next" type="radio" name="day" value="1">
+            <label for="next">Next Day Shipping <span id="dNext"></span></label> <br>
+        </div>
+        <div>
+            <input class="day" id="2" type="radio" name="day" value="2">
+            <label for="2">2 Day Shipping <span id="dTwo"></span></label> <br>
+        </div>
+        <div>
+            <input class="day" id="standard" type="radio" name="day" value="7" checked>
+            <label for="standard">Standard Shipping <span id="dStand"></span></label> <br>
+        </div>
+
+        <button type="button" onclick="displayCost()">Find Cost</button>
+    </form>
+    <div id="cost_calculation"></div>
+        <br>
+        <br>
+
+
+    <script type="text/javascript">
     //it's not wrong to pass in a value like this to a function, in fact it is good.  Though usually we don't want to put so much code into the onclick handler below.  There are better ways to do it, but since we haven't covered those just yet, I'll say this:
     //have a function called display_cost(), inside it gather the weight from the input, call calculateCost to get the value, and then print the value into the div like you are doing below.
-    //Also you will want to put this script block up in between the head tags above.  Or to the end of the body tag below (just inside the </body> tag)
-    //very well done overall!  Fix the problems and we'll move forward with
+
     function calculateCost(weight) {
-        var ounces=weight*16  //remember to put semicolons after lines of code.  Any line I comment with ## needs one, in addition to whatever else I write.  ##
+        var ounces=weight*16;
         if (weight < 1) {
-            return 20*ounces //## remember, it's cents per ounce, not dollars per ounce.  So you would need to either have this be .2, or deal with it as cents elsewhere.  Better to have it as .2 since it is more accurate to what you are intending
+            return .2*ounces; //
         }
-        if (1<weight<5) { //can't really do this.  You would have to combine it thusly: weight > 1 && weight < 5
-            return 40*ounces//##
+        else if (weight > 1 && weight < 5) {
+            return .4*ounces;
         }
-        if (weight>5) {
-            return 70*ounces//##
+        else { //weight > 5
+            return .7*ounces;
         }
     }
+
+    function displayCost() {
+        var weight = document.getElementById('weight').value;
+        var cost = calculateCost(weight);
+        document.getElementById('cost_calculation').innerHTML = cost;
+    }
+
+    function calculate_shippingtime(){
+        //calculate the shipping time and apply to each radio button text
+    }
+
+    var todayDate = new Date(); //get today's date
+    document.getElementById("today").innerHTML = todayDate.toDateString();
+
+    //populate shipping arrival day fields with shipping date +1, +2, and +7
+    //determine if next-day arrival date is a sunday
+        //if it is, add +1 to arrival date for next-day shipping
+    //or determine if two-day arrival date is a sunday
+        //if it is, add +1 to arrival date for next-day shipping
+
+
+    function calculate_arrival_date(transit_period){
+        //get today's date
+        var todayDate = new Date();
+        var dayOfWeek = todayDate.getDay();
+        var shippingDate = new Date();
+        if (dayOfWeek == 0) {
+
+            shippingDate.setDate(todayDate.getDate() + 1);
+            //todayDate.setDate(dayOfWeek + 1)
+        }
+        else{
+            shippingDate = todayDate;
+        }
+        var arrivalDate = new Date();
+        arrivalDate.setDate(shippingDate.getDate() + transit_period);//set the arrival date to shipping date + transit period
+        var newDate = new Date();
+        var dayWeek = newDate.getDate();
+        var arrivalTime = new Date();
+        if (dayWeek == 0){ //if the transit period would arrive on a sunday, add + 1 to arrival date
+
+            arrivalTime.setDate(newDate.getDate() + 1);
+        }
+        else{
+            arrivalTime = newDate;
+        }
+
+
+        //return the arrival date
+        return shippingDate;
+        return arrivalTime;
+
+    }
+    function populate_arrival_dates(){
+        var today = new Date();
+        var day_input_array = document.querySelectorAll('input[name=day]');
+        for(var i=0; i<day_input_array.length; i++){
+            var current_day_radio_element = day_input_array[i];
+            var transit_date = current_day_radio_element.value;
+            var calcArrival = calculate_arrival_date(transit_date);
+            var input_parent = current_day_radio_element.parentNode;
+            var span_element = input_parent.querySelector('span');
+            span_element.innerHTML = calcArrival;
+        }
+        // ;
+
+
+
+        //call calculate_arrival_date and get arrival date for 1 day shipping
+        //display 1 day shipping date in 1 day shipping field
+        //call calculate_arrival_date and get arrival date for 2 day shipping
+        //display 2 day shipping date in 1 day shipping field
+        //call calculate_arrival_date and get arrival date for 7 day shipping
+        //display 7 day shipping date in 1 day shipping field
+    }
+    /*function nextDay() {
+     var n = new Date();
+     var m = n.setDate(n.getDate() + 1);
+     document.getElementById("dNext").innerHTML = m.toDateString();
+     }
+     function twoDay() {
+     var c = new Date();
+     var b = c.setDate(c.getDate()+2);
+     document.getElementById("dTwo").innerHTML = b.toDateString();
+
+     function standShip() {
+     var p = new Date ();
+     var o = p.setDate(p.getDate()+6);
+     document.getElementById("dStand").innerHTML = o.toDateString();
+     }
+
+*/
+
 </script>
-<form>
-    Package Weight: <input type="text" name="PackageWeight" id="weight">
-    <button type="button" onclick="document.getElementById('cost_calculation').innerHTML= calculateCost(document.getElementById('weight').value)">Find Cost</button>
-
-</form>
-<div id="cost_calculation">
-
-</div>
 </body>
 </html>
