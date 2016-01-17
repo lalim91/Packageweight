@@ -9,12 +9,18 @@
         Package Weight: <input type="text" name="PackageWeight" id="weight"> <br>
         <br>
         <p> Today is: <span id="today"></span></p>
-        <input class="day" id="next" type="radio" name="day" value="Next Day Shipping">
+        <div>
+            <input class="day" id="next" type="radio" name="day" value="1">
             <label for="next">Next Day Shipping <span id="dNext"></span></label> <br>
-        <input class="day" id="2" type="radio" name="day" value="2 Day Shipping">
+        </div>
+        <div>
+            <input class="day" id="2" type="radio" name="day" value="2">
             <label for="2">2 Day Shipping <span id="dTwo"></span></label> <br>
-        <input class="day" id="standard" type="radio" name="day" value="Standard Shipping" checked>
+        </div>
+        <div>
+            <input class="day" id="standard" type="radio" name="day" value="7" checked>
             <label for="standard">Standard Shipping <span id="dStand"></span></label> <br>
+        </div>
 
         <button type="button" onclick="displayCost()">Find Cost</button>
     </form>
@@ -50,9 +56,70 @@
         //calculate the shipping time and apply to each radio button text
     }
 
-    var d = new Date();
-    document.getElementById("today").innerHTML = d.toDateString();
+    var todayDate = new Date(); //get today's date
+    document.getElementById("today").innerHTML = todayDate.toDateString();
 
+    //populate shipping arrival day fields with shipping date +1, +2, and +7
+    //determine if next-day arrival date is a sunday
+        //if it is, add +1 to arrival date for next-day shipping
+    //or determine if two-day arrival date is a sunday
+        //if it is, add +1 to arrival date for next-day shipping
+
+
+    function calculate_arrival_date(transit_period){
+        //get today's date
+        var todayDate = new Date();
+        var dayOfWeek = todayDate.getDay();
+        var shippingDate = new Date();
+        if (dayOfWeek == 0) {
+
+            shippingDate.setDate(todayDate.getDate() + 1);
+            //todayDate.setDate(dayOfWeek + 1)
+        }
+        else{
+            shippingDate = todayDate;
+        }
+        var arrivalDate = new Date();
+        arrivalDate.setDate(shippingDate.getDate() + transit_period);//set the arrival date to shipping date + transit period
+        var newDate = new Date();
+        var dayWeek = newDate.getDate();
+        var arrivalTime = new Date();
+        if (dayWeek == 0){ //if the transit period would arrive on a sunday, add + 1 to arrival date
+
+            arrivalTime.setDate(newDate.getDate() + 1);
+        }
+        else{
+            arrivalTime = newDate;
+        }
+
+
+        //return the arrival date
+        return shippingDate;
+        return arrivalTime;
+
+    }
+    function populate_arrival_dates(){
+        var today = new Date();
+        var day_input_array = document.querySelectorAll('input[name=day]');
+        for(var i=0; i<day_input_array.length; i++){
+            var current_day_radio_element = day_input_array[i];
+            var transit_date = current_day_radio_element.value;
+            var calcArrival = calculate_arrival_date(transit_date);
+            var input_parent = current_day_radio_element.parentNode;
+            var span_element = input_parent.querySelector('span');
+            span_element.innerHTML = calcArrival;
+        }
+        // ;
+
+
+
+        //call calculate_arrival_date and get arrival date for 1 day shipping
+        //display 1 day shipping date in 1 day shipping field
+        //call calculate_arrival_date and get arrival date for 2 day shipping
+        //display 2 day shipping date in 1 day shipping field
+        //call calculate_arrival_date and get arrival date for 7 day shipping
+        //display 7 day shipping date in 1 day shipping field
+    }
     /*function nextDay() {
      var n = new Date();
      var m = n.setDate(n.getDate() + 1);
@@ -69,7 +136,7 @@
      document.getElementById("dStand").innerHTML = o.toDateString();
      }
 
-
+*/
 
 </script>
 </body>
